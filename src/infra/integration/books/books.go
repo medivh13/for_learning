@@ -1,9 +1,9 @@
 package books
 
 import (
-	dto "for_learning/src/app/dto/books"
 	"encoding/json"
 	"fmt"
+	dto "for_learning/src/app/dto/books"
 	"io"
 	"net/http"
 	"time"
@@ -26,7 +26,6 @@ func (s *openLibraryService) GetBooksBySubject(subject string) (*dto.GetBooksRes
 	url := "http://openlibrary.org/subjects/%s.json?"
 
 	url = fmt.Sprintf(url, subject)
-	fmt.Println(url, "here")
 
 	getReq, err := http.NewRequest(http.MethodGet, url, nil)
 	if err != nil {
