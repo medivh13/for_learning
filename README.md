@@ -1,5 +1,5 @@
 # Project ini saya buat untuk sharing kepada rekan - rekan semua
-- pada setiap materi yang saya share, akan saya tempatkan pada branch yang berbeda
+- pada setiap materi yang saya share, mungkin akan saya tempatkan pada branch yang berbeda
 
 # cara menjalankan setelah clone
 - cd for_learning
