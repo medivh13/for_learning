@@ -47,7 +47,7 @@ func (h *booksHandler) GetBySubject(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	data, err := h.usecase.GetBooksBySubject(&getDTO)
+	data, err := h.usecase.GetBooksBySubject(r.Context(), &getDTO)
 	if err != nil {
 		h.response.HttpError(w, common_error.NewError(common_error.FAILED_RETRIEVE_DATA, err))
 		return
