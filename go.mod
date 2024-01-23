@@ -11,6 +11,7 @@ require (
 	github.com/mattn/go-colorable v0.1.13
 	github.com/sirupsen/logrus v1.9.3
 	github.com/snowzach/rotatefilehook v0.0.0-20220211133110-53752135082d
+	github.com/sony/gobreaker v0.5.0
 	github.com/stretchr/testify v1.8.4
 	golang.org/x/net v0.0.0-20210428140749-89ef3d95e781
 	golang.org/x/time v0.5.0

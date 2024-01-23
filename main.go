@@ -14,6 +14,7 @@ import (
 
 	ms_log "for_learning/src/infra/log"
 
+	circuit_breaker_service "for_learning/src/infra/circuit_breaker"
 	redisService "for_learning/src/infra/persistence/redis/service"
 
 	_ "github.com/joho/godotenv/autoload"
@@ -45,7 +46,8 @@ func main() {
 
 	redisSvc := redisService.NewServRedis(redisClient)
 
-	bookIntegration := bookInteg.NewIntegOpenLibrary()
+	circuitBreaker := circuit_breaker_service.NewCircuitBreakerInstance()
+	bookIntegration := bookInteg.NewIntegOpenLibrary(circuitBreaker)
 
 	// HTTP Handler
 	// the server already implements a graceful shutdown.
