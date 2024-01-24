@@ -5,10 +5,6 @@ import (
 	limiter "for_learning/src/infra/limiter"
 )
 
-// Limiter adalah antarmuka untuk rate limiter
-type Limiter interface {
-	Allow() bool
-}
 
 // MockLimiter adalah implementasi mock dari Limiter
 type MockLimiter struct {

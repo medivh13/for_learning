@@ -6,12 +6,15 @@ import (
 	usecases "for_learning/src/app/usecase"
 	bookUC "for_learning/src/app/usecase/books"
 	"for_learning/src/infra/config"
+	"for_learning/src/infra/persistence/redis"
 
 	"for_learning/src/interface/rest"
 
 	bookInteg "for_learning/src/infra/integration/books"
 
 	ms_log "for_learning/src/infra/log"
+
+	redisService "for_learning/src/infra/persistence/redis/service"
 
 	_ "github.com/joho/godotenv/autoload"
 )
@@ -38,13 +41,17 @@ func main() {
 		ms_log.IsProduction(isProd),
 		ms_log.LogAdditionalFields(m))
 
+	redisClient, err := redis.NewRedisClient(conf.Redis, logger)
+
+	redisSvc := redisService.NewServRedis(redisClient)
+
 	bookIntegration := bookInteg.NewIntegOpenLibrary()
 
 	// HTTP Handler
 	// the server already implements a graceful shutdown.
 
 	allUC := usecases.AllUseCases{
-		BookUC: bookUC.NewBooksUseCase(bookIntegration),
+		BookUC: bookUC.NewBooksUseCase(bookIntegration, redisSvc),
 	}
 
 	httpServer, err := rest.New(

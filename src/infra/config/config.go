@@ -12,7 +12,7 @@ type AppConf struct {
 
 type HttpConf struct {
 	Port string
-	
+
 	Timeout int
 }
 
@@ -24,12 +24,18 @@ type RPSConf struct {
 	Limit int
 }
 
+type RedisConf struct {
+	Host string
+	Port string
+}
+
 // Config ...
 type Config struct {
-	App  AppConf
-	Http HttpConf
-	Log  LogConf
-	RPS  RPSConf
+	App   AppConf
+	Http  HttpConf
+	Log   LogConf
+	RPS   RPSConf
+	Redis RedisConf
 }
 
 // NewConfig ...
@@ -67,11 +73,18 @@ func Make() Config {
 	rps := RPSConf{
 		Limit: limit,
 	}
+
+	redis := RedisConf{
+		Host: os.Getenv("REDIS_HOST"),
+		Port: os.Getenv("REDIS_PORT"),
+	}
+
 	config := Config{
-		App:  app,
-		Http: http,
-		Log:  log,
-		RPS:  rps,
+		App:   app,
+		Http:  http,
+		Log:   log,
+		RPS:   rps,
+		Redis: redis,
 	}
 
 	return config
