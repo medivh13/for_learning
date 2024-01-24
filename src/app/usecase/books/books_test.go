@@ -50,7 +50,6 @@ func (suite *BooksUseCaseList) SetupTest() {
 
 }
 
-
 func (u *BooksUseCaseList) TestGetBySubjectFromRedisSuccess() {
 	ctx := context.Background()
 	dataresp, _ := json.Marshal(u.dtoResp)
@@ -68,12 +67,11 @@ func (u *BooksUseCaseList) TestGetBySubjectSuccess() {
 	u.Equal(nil, err)
 }
 
-
 func (u *BooksUseCaseList) TestGetBySubjectFail() {
 	ctx := context.Background()
 	u.mockRedis.Mock.On("GetData", ctx, "love").Return("", errors.New(mock.Anything))
 	u.mockInteg.Mock.On("GetBooksBySubject", "love").Return(nil, errors.New(mock.Anything))
-	_, err := u.useCase.GetBooksBySubject(ctx,u.dtoGet)
+	_, err := u.useCase.GetBooksBySubject(ctx, u.dtoGet)
 	u.Equal(errors.New(mock.Anything), err)
 }
 
