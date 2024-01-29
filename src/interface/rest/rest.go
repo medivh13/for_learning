@@ -13,14 +13,16 @@ import (
 
 	bookHandler "for_learning/src/interface/rest/handlers/books"
 	healthHandler "for_learning/src/interface/rest/handlers/health"
-	
+	pickupHandler "for_learning/src/interface/rest/handlers/pickup"
+
 	"for_learning/src/interface/rest/response"
 	"for_learning/src/interface/rest/route"
+
+	limiter "for_learning/src/infra/limiter"
 
 	"github.com/go-chi/chi/middleware"
 	"github.com/go-chi/chi/v5"
 	"github.com/sirupsen/logrus"
-	limiter "for_learning/src/infra/limiter"
 	"golang.org/x/time/rate"
 )
 
@@ -73,7 +75,6 @@ func makeRoute(
 
 	r.Use(middleware.Logger)
 
-
 	// timeout middleware
 	if timeout <= 0 {
 		logger.Fatalf("invalid http timeout")
@@ -85,9 +86,11 @@ func makeRoute(
 	hh := healthHandler.NewHealthHandler(respClient)
 	r.Mount("/", route.HealthRouter(hh))
 	bh := bookHandler.NewBooksHandler(respClient, useCases.BookUC, limiter)
+	ph := pickupHandler.NewBooksHandler(respClient, useCases.PickUpUC)
 	r.Route("/api", func(r chi.Router) {
 
 		r.Mount("/books", route.BookRouter(bh))
+		r.Mount("/pickup", route.PickupRouter(ph))
 	})
 
 	return r

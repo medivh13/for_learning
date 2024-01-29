@@ -9,6 +9,7 @@ const (
 	FAILED_FORWARD_DATA   ErrorCode = 4005
 	IP_ISNT_WHITELIST     ErrorCode = 4006
 	RATE_LIMIT_EXCEEDED   ErrorCode = 4007
+	FAILED_CREATE_DATA    ErrorCode = 4008
 )
 
 var errorCodes = map[ErrorCode]*CommonError{
@@ -51,5 +52,10 @@ var errorCodes = map[ErrorCode]*CommonError{
 		ClientMessage: "Failed to forward data.",
 		SystemMessage: "Rate limit exceed.",
 		ErrorCode:     RATE_LIMIT_EXCEEDED,
+	},
+	FAILED_CREATE_DATA: {
+		ClientMessage: "Failed to create data.",
+		SystemMessage: "Something wrong happened while create data.",
+		ErrorCode:     FAILED_CREATE_DATA,
 	},
 }

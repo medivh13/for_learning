@@ -5,6 +5,7 @@ import (
 
 	usecases "for_learning/src/app/usecase"
 	bookUC "for_learning/src/app/usecase/books"
+	pickUpUC "for_learning/src/app/usecase/pickup"
 	"for_learning/src/infra/config"
 	"for_learning/src/infra/persistence/redis"
 
@@ -16,6 +17,9 @@ import (
 
 	circuit_breaker_service "for_learning/src/infra/circuit_breaker"
 	redisService "for_learning/src/infra/persistence/redis/service"
+
+	"for_learning/src/infra/broker/nats"
+	natsPublisher "for_learning/src/infra/broker/nats/publisher"
 
 	_ "github.com/joho/godotenv/autoload"
 )
@@ -49,11 +53,14 @@ func main() {
 	circuitBreaker := circuit_breaker_service.NewCircuitBreakerInstance()
 	bookIntegration := bookInteg.NewIntegOpenLibrary(circuitBreaker)
 
+	Nats := nats.NewNats(conf.Nats, logger)
+	publisher := natsPublisher.NewPushWorker(Nats)
 	// HTTP Handler
 	// the server already implements a graceful shutdown.
 
 	allUC := usecases.AllUseCases{
-		BookUC: bookUC.NewBooksUseCase(bookIntegration, redisSvc),
+		BookUC:   bookUC.NewBooksUseCase(bookIntegration, redisSvc),
+		PickUpUC: pickUpUC.NewPickUpUseCase(publisher),
 	}
 
 	httpServer, err := rest.New(
