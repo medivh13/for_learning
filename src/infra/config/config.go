@@ -29,6 +29,11 @@ type RedisConf struct {
 	Port string
 }
 
+type NatsConf struct {
+	NatsHost   string
+	NatsStatus string
+}
+
 // Config ...
 type Config struct {
 	App   AppConf
@@ -36,6 +41,7 @@ type Config struct {
 	Log   LogConf
 	RPS   RPSConf
 	Redis RedisConf
+	Nats  NatsConf
 }
 
 // NewConfig ...
@@ -79,12 +85,18 @@ func Make() Config {
 		Port: os.Getenv("REDIS_PORT"),
 	}
 
+	nats := NatsConf{
+		NatsHost:   os.Getenv("NATS_HOST"),
+		NatsStatus: os.Getenv("NATS_STATUS"),
+	}
+
 	config := Config{
 		App:   app,
 		Http:  http,
 		Log:   log,
 		RPS:   rps,
 		Redis: redis,
+		Nats:  nats,
 	}
 
 	return config
