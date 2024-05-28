@@ -12,6 +12,7 @@ import (
 	"for_learning/src/infra/config"
 
 	bookHandler "for_learning/src/interface/rest/handlers/books"
+	bookGrpcHandler "for_learning/src/interface/rest/handlers/books_grpc"
 	healthHandler "for_learning/src/interface/rest/handlers/health"
 	pickupHandler "for_learning/src/interface/rest/handlers/pickup"
 
@@ -87,10 +88,12 @@ func makeRoute(
 	r.Mount("/", route.HealthRouter(hh))
 	bh := bookHandler.NewBooksHandler(respClient, useCases.BookUC, limiter)
 	ph := pickupHandler.NewBooksHandler(respClient, useCases.PickUpUC)
+	bGrpch := bookGrpcHandler.NewBooksHandler(respClient, useCases.BookGrpcUC, limiter)
 	r.Route("/api", func(r chi.Router) {
 
 		r.Mount("/books", route.BookRouter(bh))
 		r.Mount("/pickup", route.PickupRouter(ph))
+		r.Mount("/books/grpc", route.BookGRPCRouter(bGrpch))
 	})
 
 	return r

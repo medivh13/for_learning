@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+option go_package = "proto/books";
+
+package books;
+
+
+message BookReq {
+    string subject=1;
+}
+
+message BookResp {
+    string name =1;
+	string subject_type=2;
+	repeated Work works=3;
+}
+
+message Work {
+    string title=1;
+    int64 cover_id=2;
+    int64 edition_count=3;
+    repeated Author authors=4;
+}
+
+message Author  {
+	string name=1;
+}
+service BookService {
+    rpc Book(BookReq) returns (BookResp) {}
+}
